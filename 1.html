@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" ng-app>
+<head>
+    <meta charset="UTF-8">
+    <title>MVC基本使用</title>
+
+</head>
+<body>
+<p ng-controller="func1">{{name}}</p>
+<p ng-controller="func2">{{name}}</p>
+<p ng-controller="func3">{{name}}</p>
+</body>
+<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript">
+    function func1 ($scope) {
+        $scope.name = 'func1';
+    }
+    function func2 ($scope) {
+        $scope.name = 'func2';
+
+    }
+    function func3 ($scope,$rootScope) {
+//        $scope.name = '局部变量';
+        $rootScope.name = '全局变量';
+    }
+</script>
+</html>

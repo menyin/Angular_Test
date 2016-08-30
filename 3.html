@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"  ng-app>
+<head>
+    <meta charset="UTF-8">
+    <title>计算器实例(model绑定和数据监听)</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        var i=0;
+        function  calc($scope) {
+           $scope.product = {price: 100, count: 1, freight: 0};
+            $scope.test=0;
+            $scope.sum=function(){
+                return $scope.product.price*$scope.product.count;
+            };
+//            监听函数形式
+           /* $scope.$watch($scope.sum, function (newVal,oldVal) {
+             $scope.product.freight=newVal>300?0:10;
+            },true);*/
+//            监听对象形式
+            $scope.$watch( 'product', function (newVal,oldVal) {
+//                console.log(newVal);
+//                alert('323');
+               $scope.product.freight= $scope.product.price*$scope.product.count>300?0:10;
+            },true);
+        }
+
+    </script>
+</head>
+<body ng-controller="calc">
+<label for="price">商品单价：<input type="text" name="price" id="price"  ng-model="product.price"/></label>
+<label for="count">商品数量：<input type="text" name="count" id="count" ng-model="product.count"/></label>
+<label for="freight">运费：<input type="text" name="freight" id="freight"   ng-model="product.freight"/></label>
+<label >总金额：{{product.price*product.count+product.freight*1|currency:'￥'}}</label>
+</body>
+</html>

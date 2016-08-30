@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" ng-app>
+<head>
+    <meta charset="UTF-8">
+    <title>指令系统和MVVM模式</title>
+</head>
+<body>
+<div ng-controller="func1">
+    <input type="button" value="改变name值" ng-click="name='123'"/>
+    <input type="button" value="用show()改变name值" ng-click="show()"/>
+    <input type="text" name="name" ng-model="name"/>
+    <p>{{name}}</p>
+</div>
+<br/>
+<hr/>
+<br/>
+
+<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript">
+    //    指令系统
+    function func1($scope) {
+        $scope.name = '初始值';
+        $scope.show = function () {
+            $scope.name = '234';
+        }
+    }
+    //    MVVM模式
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>过滤器</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp',[]);
+        m1.controller('func1',['$scope', function ($scope) {
+            $scope.currencyModel= '12346748';
+            $scope.numberModel= '12346748';
+            $scope.uppercaseModel= 'uppercase';
+            $scope.lowercaseModel= 'LOWERCASE';
+            $scope.limittoModel1 = ['wqq','4545','wqq','4545','wqq','4545'];
+            $scope.limittoModel2 = '一二三四五六';
+            $scope.jsonModel = {"name": "chenny", "sex": "男", "phone": "110"};
+            $scope.dateModel=234234234234;
+            $scope.orderbyModel=[
+                {"name": "chenny", "sex": "男", "phone": "116"},
+                {"name": "aliww", "sex": "男", "phone": "112"},
+                {"name": "jiedaibao", "sex": "男", "phone": "113"},
+                {"name": "zhaoyj", "sex": "男", "phone": "110"},
+                {"name": "tanghf", "sex": "男", "phone": "111"}
+            ]
+        }]);
+    </script>
+</head>
+<body >
+<p ng-controller="func1">{{currencyModel|currency:'￥'}}</p>
+<p ng-controller="func1">{{numberModel|number;}}</p>
+<p ng-controller="func1">{{uppercaseModel|uppercase}}</p>
+<p ng-controller="func1">{{lowercaseModel|lowercase;}}</p>
+<p ng-controller="func1">{{limittoModel1|limitTo:3; }}</p>
+<p ng-controller="func1">{{limittoModel2|limitTo:3;}}</p>
+<pre ng-controller="func1">{{jsonModel|json}}</pre>
+<p ng-controller="func1">{{dateModel|date}}</p>
+<pre ng-controller="func1">{{orderbyModel|orderBy:'phone'|json}}</pre>
+<pre ng-controller="func1">{{orderbyModel|filter:'chen'}}</pre>
+<pre ng-controller="func1">{{orderbyModel|filter:'chen':true}}</pre>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>angular模块化</title>
+
+</head>
+<body>
+<div id="dv1" ng-controller="func1">
+    <input type="text" name="name" ng-model="name"/>
+
+    <p>{{name}}</p>
+</div>
+<div id="dv2" ng-controller="func1">
+    <input type="text" name="name" ng-model="name"/>
+    <p>{{name}}</p>
+</div>
+</body>
+<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript">
+    var model1 = angular.module('appOne', []);
+    model1.controller('func1', function ($scope) {
+        $scope.name = '初始值1';
+    });
+    var dv1 = document.getElementById('dv1');
+    angular.bootstrap(dv1, ['appOne']);
+    var model2 = angular.module('appTwo', []);
+    model2.controller('func1', function ($scope) {
+        $scope.name = '初始值2';
+    });
+    var dv2 = document.getElementById('dv2');
+    angular.bootstrap(dv2, ['appTwo']);
+</script>
+</html>

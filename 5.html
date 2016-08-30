@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>工具方法</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+</head>
+<body>
+<div class="testBind" style="width:100px; height:100px; background: red;" id="dv1"></div>
+<div class="testProxy" style="width:100px; height:100px; background: blue;" id="dv2"></div>
+<div class="testCopy" style="width:100px; height:100px; background: yellow;" id="dv3"></div>
+<div class="dv4" id="dv4"></div>
+<!--<div ng-controller="funcApply">{{name}}</div>-->
+<div>{{name}}</div>
+</body>
+<script type="text/javascript">
+    /*var dv1 = document.getElementById('dv1');
+    angular.bind(dv1, function () {
+        alert(this.className);
+    })();*/
+    /*dv1.onclick=$.proxy(function () {
+        alert(this.className);
+    },$('#dv2').get(0));*/
+/*
+    $('#dv3').click(function () {
+        var dv4 = document.getElementById('dv4');
+        var copyObj = angular.copy(dv4);
+        console.log(copyObj);
+        var obj = {
+            name: 'xxx',
+            age: 50
+        };
+        var copyObj = angular.copy(obj);
+        console.log(copyObj); //$ Object {name: "xxx", age: 50}
+    });
+*/
+
+    /*var a = {name: 'xxx'};
+    var b = {sex: 'nan',obj:{name:'ddd'}};
+    var c = {};
+    angular.extend(c, a, b);
+    console.log(c);
+    console.log(c.obj.name);
+    */
+
+    /*console.log(angular.version);*/
+
+/*
+    function  funcApply($scope,$timeout) {
+        $scope.name = '222';
+        /!*setTimeout(function () {
+            $scope.name = '333';
+        },3000);*!/
+        $timeout(function() {
+//            alert();
+            $scope.name = '333';
+        },3000);
+        setTimeout(function () {
+            angular.apply(function () {
+                $scope.name = '333';
+            });
+        }, 3000);
+    }*/
+    var m1 = angular.module('myApp', []);
+    m1.run(function ($rootScope) {
+        $rootScope.name='测试run方法'
+    });
+</script>
+</html>
