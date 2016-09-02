@@ -6,7 +6,7 @@
     <script type="text/javascript" src="js/angular.min.js"></script>
     <script type="text/javascript">
         var m1 = angular.module('myApp',[]);
-        m1.controller('func1',['$scope', function ($scope) {
+        m1.controller('func1',['$scope', function ($scope,$filter) {
             $scope.currencyModel= '12346748';
             $scope.numberModel= '12346748';
             $scope.uppercaseModel= 'uppercase';

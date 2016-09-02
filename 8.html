@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表格实例</title>
+    <style type="text/css">
+        td {
+            border: 1px solid black;
+        }
+
+    </style>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+
+</head>
+<body ng-app="myApp">
+<h3>主要知识点：过滤器、遍历</h3>
+<p>此实例后面再做一次，因为做过程中出现一些其它js框架或原生js处理$scope模型数据时会有问题。</p>
+<input type="text" name="search" id="txtSearch" /><input type="button" id="btSearch" value="搜索"/>
+<table ng-controller="func1">
+    <tr >
+        <td>name</td>
+        <td>sex</td>
+        <td>phone</td>
+    </tr>
+    <tr ng-repeat="data in mylist">
+        <td>{{data.name}}</td>
+        <td>{{data.sex}}</td>
+        <td>{{data.phone}}</td>
+    </tr>
+</table>
+
+</body>
+<script type="text/javascript">
+    var m1 = angular.module('myApp',[]);
+    m1.controller('func1', ['$scope', '$filter',function ($scope,$filter) {
+        var list = [
+            {"name": "chenny", "sex": "男", "phone": "116"},
+            {"name": "aliww", "sex": "男", "phone": "112"},
+            {"name": "jiedaibao", "sex": "男", "phone": "113"},
+            {"name": "zhaoyj", "sex": "男", "phone": "110"},
+            {"name": "tanghf", "sex": "男", "phone": "111"}
+        ];
+        $scope.mylist=list;
+        $('tr:nth-child(1) td').click(function () {
+            var colTitle=this.innerHTML;
+            $scope.$apply(function () {
+                $scope.mylist = $filter('orderBy')(list,colTitle);
+            });
+//            angular.apply(function () {
+//                $scope.mylist = $filter('orderBy')(list,colTitle);
+//            });
+        });
+        $('#btSearch').click(function () {
+            var txt=$('#txtSearch').html();
+            if (txt) {
+                console.log($filter('filter').(list,txt));
+//                $scope.$apply(function () {
+//                    $scope.mylist =  $filter('filter').(list,txt);
+//                });
+            }
+        });
+    }]);
+
+</script>
+</html>

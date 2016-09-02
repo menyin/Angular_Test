@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>其它一些指令</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp', []);
+        m1.controller('func1',['$scope',function($scope) {
+            $scope.myInit = 'ng-init初始化数据';
+            $scope.myModel='设置失去焦点再出发数据模型更新';
+        }])
+    </script>
+</head>
+<body ng-controller="func1">
+<div ng-init="myInit='ng-init初始化数据'">{{myInit}}</div>
+<input type="text" ng-model="myModel"  ng-model-options="{updateOn:'blur'}"/>{{myModel}}
+
+</body>
+</html>

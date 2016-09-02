@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>样式指令</title>
+    <style>
+        .red {
+            background: red;
+        }
+        .yellow{
+            background: yellow;
+        }
+    </style>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" >
+        var m1 = angular.module('myApp', []);
+        m1.controller('func1', ['$scope','$timeout',function ($scope,$timeout) {
+            $scope.myClass='{red:true}';
+            $scope.myStyle='{background:"yellow"}';
+            $scope.myHref = 'http://www.baidu.com';
+            $scope.mySrc = 'js/jquery-1.11.1.js';
+            $scope.myShow= false;
+            $scope.myHide= false;
+        }]);
+    </script>
+</head>
+<body ng-controller="func1">
+<div  ng-class="{{myClass}}">测试ng-class</div>
+<div ng-style="{{myStyle}}">测试ng-style</div>
+<a ng-href="{{myHref}}">测试ng-href</a>
+<a ng-attr-href="{{myHref}}">测试ng-attr-*</a>
+<script type="text/javascript" ng-src="{{mySrc}}"></script>
+<script type="text/javascript">
+    window.onload=function() {
+        alert('测试ng-src | '+$('a').eq(0).attr('href'));
+    };
+</script>
+测试ng-show <input type="checkbox" ng-model="myShow"/>{{myShow}}
+<input type="button" ng-show="myShow" value="测试ng-show"/>
+测试ng-hide<input type="checkbox" ng-model="myHide"/>{{myHide}}
+<input type="button" ng-hide="myHide" value="测试ng-hide"/>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>repeat</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+    <script type="text/javascript">
+            var m1 = angular.module('myApp', []);
+            m1.controller('func1', ['$scope',function ($scope) {
+                $scope.mylist = [
+                    {"name": "chenny", "sex": "男", "phone": "116"},
+                    {"name": "aliww", "sex": "男", "phone": "112"},
+                    {"name": "jiedaibao", "sex": "男", "phone": "113"},
+                    {"name": "zhaoyj", "sex": "男", "phone": "110"},
+                    {"name": "tanghf", "sex": "男", "phone": "111"}
+                ];
+            }]);
+    </script>
+</head>
+<body ng-app="myApp" ng-controller="func1">
+<h3>基本使用</h3>
+<ul id="mylist" >
+    <li ng-repeat="data in mylist">{{data.name}}</li>
+</ul>
+<h3>$index</h3>
+<ul>
+    <li ng-repeat="data in mylist">{{data.name}}索引是{{$index}}</li>
+</ul>
+<h3>$first</h3>
+<ul>
+    <li ng-repeat="data in mylist">{{data.name}}是否首项{{$first}}</li>
+</ul>
+<h3>$middle</h3>
+<ul>
+    <li ng-repeat="data in mylist">{{data.name}}是否非首尾项{{$middle}}</li>
+</ul>
+<h3>$last</h3>
+<ul>
+    <li ng-repeat="data in mylist">{{data.name}}是否是尾项{{$last}}</li>
+</ul>
+<h3>$even</h3>
+<ul>
+    <li ng-repeat="data in mylist">{{data.name}}是否是偶数项{{$even}}</li>
+</ul>
+<h3>$odd</h3>
+<ul>
+    <li ng-repeat="data in mylist">{{data.name}}是否是奇数项{{$odd}}</li>
+</ul>
+<h3>ng-repeat-start和ng-repeat-end</h3>
+<div ng-repeat-start="data in mylist">{{data.name}}开头</div>
+<p>{{data.name}}中间</p>
+<p ng-repeat-end>{{data.name}}结尾</p>
+
+</body>
+</html>

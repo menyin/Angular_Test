@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>input相关指令</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+
+        var m1 = angular.module('myApp', []);
+        m1.controller('func1', ['$scope', function ($scope) {
+            $scope.myd = false;
+        }]);
+        var iNow = 5;
+        m1.controller('func2', ['$scope', '$interval', function ($scope, $interval) {
+            $scope.val = iNow;
+            var timer = $interval(function () {
+                $scope.val = --iNow;
+                console.log(iNow);
+                if (!iNow) {
+                    $interval.cancel(timer);
+                }
+            }, 1000);
+        }])
+        m1.controller('func3', ['$scope', function ($scope) {
+            $scope.val = '测试数据模型';
+            $scope.html = '<h2>1231</h2>';
+        }]);
+    </script>
+</head>
+<body>
+<div ng-controller="func1">
+    <h3>input状态指令</h3>
+    选中后可使下列指令生效<input type="checkbox" ng-model="myd"/>{{myd}}<br/>
+    <input type="button" value="测试ng-disabled" ng-disabled="myd"/>
+    <input type="text" value="测试ng-readonly" ng-readonly="myd"/>
+    测试ng-checked<input type="checkbox" ng-checked="myd" ng-model="myd"/>
+    <input type="text" ng-value="myd"/>
+</div>
+
+<div ng-controller="func2">
+    <h3>计时效果实例</h3>
+    <input type="button" ng-value="val" ng-disabled="val"/>
+    <input type="text" value="{{val}}" ng-readonly="val"/>
+</div>
+
+<div ng-controller="func3">
+    <h3>input数据绑定指令</h3>
+    <input type="text" ng-bind="val" /><br/>
+    直接用{{}}效果：
+    <div>{{val}}</div>
+    ng-bind效果：<div ng-bind="val"></div>
+    ng-bind-template效果：<div ng-bind-template="{{val}}，{{val}}"></div>
+    ng-bind-html效果(这个效果要引入插件，这里不做研究)：<div ng-bind-html="html"></div>
+    ng-non-bindable的效果(使得表达式{{}}原样输出)：<div ng-non-bindable>{{val}}</div>
+</div>
+<script type="text/javascript">
+    alert();//测试加载html完成还没进行angularjs渲染前，{{val}}会暴露给用户的体验问题
+</script>
+</body>
+</html>

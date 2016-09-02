@@ -1,0 +1,57 @@
+<!DOCTYPE html >
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>事件指令</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp', []);
+        m1.controller('func1',['$scope', function ($scope) {
+            $scope.testclick=function () {
+                alert('单击事件');
+            }
+            $scope.testDoubleClick= function () {
+                alert('双击事件');
+            };
+            $scope.testMouseUp= function () {
+                alert('鼠标抬起事件');
+            };
+            $scope.testMouseDown= function () {
+                alert('鼠标按下事件');
+            };
+            $scope.testSelect= function () {
+                alert('选择事件');
+            };
+            $scope.testChange= function () {
+                alert('文字改变事件');
+            };
+            $scope.testCopy= function () {
+                alert('文字被拷贝事件');
+            };
+            $scope.testCut= function () {
+                alert('文字被剪切事件');
+            };
+            $scope.testPaste= function () {
+                alert('文字粘贴事件');
+            };
+        }]);
+    </script>
+</head>
+<body ng-controller="func1" >
+<div ng-click="testclick()">测试事件，请单击</div>
+<div ng-dblclick="testDoubleClick()">测试事件，请双击</div>
+<div ng-mouseup="testMouseUp()">测试事件，请鼠标抬起</div>
+<div ng-mousedown="testMouseDown()">测试事件，请鼠标抬起</div>
+利用ng-selected设置第二项为选中项<input type="checkbox" ng-model="currTtem" />
+<select name="select" id="">
+    <option value="">第1项</option>
+    <option value="" ng-selected="currTtem">第2项</option>
+    <option value="">第3项</option>
+</select>
+<br/>
+<input type="text"  ng-change="testChange()"　value="此处设置的文字并不能生效" placeholder="测试文字改变,输入文字"  ng-model="bbb" /> {{bbb}}
+<input type="text" ng-copy="testCopy()" value="请复制触发事件"/>
+<input type="text"  ng-cut="testCut()" value="请剪切触发事件"/>
+<input type="text"  ng-paste="testPaste()" value="请粘贴触发事件"/>
+</body>
+</html>
