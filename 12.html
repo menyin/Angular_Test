@@ -10,11 +10,29 @@
             $scope.myInit = 'ng-init初始化数据';
             $scope.myModel='设置失去焦点再出发数据模型更新';
         }])
+        m1.controller('func2', ['$scope', Person]);
+        function Person($scope) {
+        }
+        Person.prototype.name = 'chenny';
+        Person.prototype.sex = 'nan';
+        Person.prototype.showName= function () {
+            return 'showNameMethod';
+        };
     </script>
 </head>
 <body ng-controller="func1">
 <div ng-init="myInit='ng-init初始化数据'">{{myInit}}</div>
 <input type="text" ng-model="myModel"  ng-model-options="{updateOn:'blur'}"/>{{myModel}}
+<hr/>
+<h3>测试ng-include</h3>
+<div  ng-include="'temp.html'"></div>
+<div  ng-include="'http://www.baidu.com'">不能跨域引用</div>
+<hr/>
+<h3>测试ng-controller采用面向对象调用</h3>
+<div ng-controller="Person as p">
+<div>{{p.name}}</div>
+<div>{{p.showName()}}</div>
+</div>
 
 </body>
 </html>
