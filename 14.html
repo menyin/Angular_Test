@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>表单验证</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp', []);
+        m1.controller('func1', ['$scope', function ($scope) {
+            $scope.text = 'hello';
+        }]);
+        m1.controller('func2', ['$scope', function ($scope) {
+            $scope.nameObj = {
+                val:'',
+                result:'default',
+                tipMsgs:[
+                    {name:'default',msg:''},
+                    {name:'required',msg:'必填项'},
+                    {name:'pattern',msg:'只能包含字母'},
+                    {name:'minlength',msg:'字符数至少5位'},
+                    {name:'pass',msg:'验证通过'},
+                ]
+            };
+            $scope.change = function (target,err) {
+                console.log(err);
+                for(attr in err) {
+                    if (err[attr]==true) {
+                        $scope.nameObj.result = attr;
+                        return;
+                    }
+                    $scope.nameObj.result = 'pass';
+                }
+            };
+
+        }]);
+    </script>
+</head>
+<body>
+<form ng-controller="func1" action="#" name="myForm">
+    <label for="myName">姓名：</label>
+    <input type="text" name="myName" ng-model="text" required ng-minlength="5" ng-pattern="/^[a-zA-Z]+$/"/>
+
+    <p>{{myForm.myName.$valid}}</p>
+
+    <p>{{myForm.myName.$invalid}}</p>
+
+    <p>{{myForm.myName.$pristine}}</p>
+
+    <p>{{myForm.myName.$dirty}}</p>
+
+    <p>{{myForm.myName.$error}}</p>
+</form>
+<hr/>
+<h3>表单验证实例</h3>
+<p style="color:red;">必须请输入至少5个字母字符</p>
+<form ng-controller="func2" action="#" name="testForm">
+    <label for="testName">姓名：</label>
+    <input name="testName" type="text" ng-model="nameObj.val" ng-minlength="5" ng-pattern="/^[a-zA-Z]+$/" ng-blur="change('nameObj',testForm.testName.$error)" required/>
+   <span ng-repeat="info in nameObj.tipMsgs | filter:nameObj.result">{{info.msg}}</span>
+</form>
+</body>
+</html>

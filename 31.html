@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>运动插件+路由选显卡</title>
+    <style>
+        .box {
+            transition:1s all;
+            position:absolute;
+        }
+        .box.ng-enter {
+            opacity:0;
+        }
+        .box.ng-enter-active {
+            opacity:1;
+        }
+        .box.ng-leave {
+            opacity:0;
+        }
+        .box.ng-leave-active {
+            opacity:0;
+        }
+    </style>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script src="http://cdn.bootcss.com/angular.js/1.2.9/angular-route.min.js"></script>
+    <script src="http://cdn.bootcss.com/angular.js/1.2.9/angular-animate.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp', ['ngRoute', 'ngAnimate']);
+        m1.config(['$routeProvider', function ($routeProvider) {
+            $routeProvider.when('/aaa/:param', {
+                template: '<h2 style="background: green; color:red;">aaa页面url参数为{{params}}，模型数据为{{name}}</h2>',
+                controller: 'func1'
+            }).when('/bbb', {
+                template: '<h2 style="background: orange; color:black;" >bbb页面，模型数据为{{name}}</h2>',
+                controller: 'func2'
+            }).when('/ccc', {
+                template: '<h2 style="background: yellow; color:white;">ccc页面，模型数据为{{name}}</h2>',
+                controller: 'func3'
+            }).otherwise({
+                redirectTo:'/aaa/456'
+            });
+        }])
+        m1.controller('func1',['$scope','$location','$routeParams', function ($scope,$location,$routeParams) {
+            $scope.name = 'aaa数据模型';
+            $scope.$location = $location;
+            $scope.params=$routeParams;
+        }]);
+        m1.controller('func2', ['$scope', function ($scope) {
+            $scope.name = 'bbb数据模型';
+        }]);
+        m1.controller('func3', ['$scope', function ($scope) {
+            $scope.name = 'ccc数据模型';
+        }]);
+    </script>
+</head>
+<body>
+<div ng-controller="func1">
+    <a href="" ng-click="$location.path('/aaa/123')">aaa页面</a>
+    <a href="" ng-click="$location.path('/bbb')">bbb页面</a>
+    <a href="" ng-click="$location.path('/ccc')">ccc页面</a>
+    <div ng-view class="box"></div>
+</div>
+</body>
+</html>

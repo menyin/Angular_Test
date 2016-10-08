@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>拖拽实例</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            background: gray;
+            left: 200px;
+            top: 200px;
+            position: absolute;
+        }
+    </style>
+    <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp', []);
+        m1.directive('myDrag', function () {
+            return {
+                restrict: 'A',
+                replace: false,
+                link: function (scope, element, attr) {
+                    var i = 0;
+                    $(element[0]).on('mousedown', function (e) {
+                        var startX = $(element[0]).offset().left;
+                        var startY = $(element[0]).offset().top;
+                        var dX = e.clientX - startX;
+                        var dY = e.clientY - startY;
+                        if (attr.myDrag == 'true') {
+                            var $dv = $('<div>');
+                            $dv.css({
+                                width: $(this).outerWidth(),
+                                height: $(this).outerHeight(),
+                                left: $(this).offset().left,
+                                top: $(this).offset().top,
+                                position: 'absolute',
+                                border: '1px dashed black',
+                                background: 'none'
+                            });
+                            $('body').append($dv);
+                        }
+//                            console.log($dv.css());
+                        $(document).on('mouseover', function (e) {
+                            if (attr.myDrag == 'true') {
+                                $dv.css('left', e.clientX - dX);
+                                $dv.css('top', e.clientY - dY);
+                            } else {
+                                $(element[0]).css('left', e.clientX - dX);
+                                $(element[0]).css('top', e.clientY - dY);
+                            }
+                        });
+                        $(document).on('mouseup', function (e) {
+                            if (attr.myDrag == 'true') {
+                                $dv.remove();
+                                $(element[0]).css('left', e.clientX - dX);
+                                $(element[0]).css('top', e.clientY - dY);
+                            }
+                            $(document).off();
+
+                        });
+                    });
+                    return false;
+                }
+            };
+        });
+    </script>
+</head>
+<body>
+<div my-drag="true" class="drag">
+    dasds
+</div>
+</body>
+</html>

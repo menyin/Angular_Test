@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>$anchorScroll服务</title>
+    <style>
+        div {
+            width: 300px;
+            height: 200px;
+            background: gray;
+            margin: 20px;
+        }
+    </style>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp', []);
+        m1.controller('func1', ['$scope','$location', '$anchorScroll', function ($scope,$location, $anchorScroll) {
+            $scope.change= function (id) {
+                $location.hash(id);
+                $anchorScroll();
+            };
+        }]);
+    </script>
+</head>
+<body ng-controller="func1">
+<ul>
+    <li ng-repeat="item in [1,2,3,4]" ng-click="change('dv'+item)">{{item}}</li>
+</ul>
+    <!--<div ng-repeat="item in [1,2,3,4]" id="dv{{item}}">这是第{{item}}个div</div>-->
+    <div ng-repeat="item in [1,2,3,4]" ng-attr-id="dv{{item}}">这是第{{item}}个div</div>
+</body>
+</html>

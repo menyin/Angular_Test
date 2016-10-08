@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>作用域下的事件的数据传播</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp', []);
+        m1.controller('func1', ['$scope', function ($scope) {
+            $scope.count = 0;
+            $scope.$on('myEvent', function (event) {
+                console.log(event.currentScope);//当前的作用域
+                console.log(event.targetScope);//传播后目标作用域
+                event.stopPropagation();//阻止向上传播，即阻止冒泡
+                $scope.count++;
+            })
+        }]);
+
+    </script>
+
+</head>
+<body>
+<div ng-controller="func1">
+    {{count}}
+    <!--向上传播-->
+    <!--<div ng-controller="func1" ng-click="$emit('myEvent') ">-->
+    <!--向下传播-->
+    <div ng-controller="func1" ng-click="$broadcast('myEvent') ">
+        {{count}}
+        <div ng-controller="func1">
+            {{count}}
+        </div>
+    </div>
+</div>
+</body>
+</html>

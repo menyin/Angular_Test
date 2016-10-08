@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>运动插件的js实现</title>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            background:red;
+        }
+    </style>
+    <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script src="http://cdn.bootcss.com/angular.js/1.2.9/angular-animate.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp', ['ngAnimate']);
+        m1.animation('.box', function () {
+            return {
+                addClass: function (element, sClass, done) {
+                    console.log(element);
+                    console.log(sClass);
+                    console.log(done);
+//                    $(element).animate({width:0,height:0},1000,done);
+
+                },
+                removeClass : function(element,sClass,done){
+//                    $(element).css({width:0,height:0});
+//                    $(element).animate({width:200,height:200},1000,done);
+                }
+            };
+        });
+        m1.controller('func1', ['$scope', function ($scope) {
+            $scope.bBtn = true;
+        }]);
+
+    </script>
+</head>
+<body ng-controller="func1">
+<input type="checkbox" ng-model="bBtn">
+<!--<div ng-if="bBtn" class="box"></div>-->
+<div ng-show="bBtn" class="box"></div>
+
+<ul>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+</body>
+</html>

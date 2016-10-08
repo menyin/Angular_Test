@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>$location服务</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp', []);
+        m1.controller('func1', ['$scope', '$location', function($scope,$location) {
+            var absUrl= $location.absUrl();//
+            console.log(absUrl);
+            var path = $location.path('aaa');
+            console.log(path);
+             $location.hash('dddd');
+            $location.search('name','陈南阳');
+            var url = $location.url();
+            console.log(url);
+            var host = $location.host();
+            console.log(host);
+            var port = $location.port();
+            console.log(port);
+            var protocol = $location.protocol();
+            console.log(protocol);
+
+        }]);
+
+    </script>
+</head>
+<body ng-controller="func1">
+
+</body>
+</html>

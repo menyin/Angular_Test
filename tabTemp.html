@@ -1,0 +1,5 @@
+<div id="{{myId}}" class="tab">
+    <input type="button" ng-repeat-start="data in myData" ng-value="data.title"/><span ng-repeat-end >|</span>
+    <br/>
+<textarea ng-repeat="data in myData" >{{data.content}}</textarea>
+</div>

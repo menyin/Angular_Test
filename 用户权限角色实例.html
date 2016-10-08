@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>用户权限角色实例</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp', []);
+        m1.controller('func1',['$scope','$http',function($scope,$http) {
+            $http({
+                method: 'JSONP',
+                url: 'http://localhost:3000/datas/roles?callback=JSON_CALLBACK'//由NodeJS搭建的数据服务
+            }).success(function (data) {
+                $scope.roles=data;
+            }).error(function () {
+                alert('角色表请求失败！');
+            });
+            $http({
+                method: 'JSONP',
+                url: 'http://localhost:3000/datas/limits?callback=JSON_CALLBACK'//由NodeJS搭建的数据服务
+            }).success(function (data) {
+                $scope.limits=data;
+            }).error(function () {
+                alert('权限表请求失败！');
+            });
+            $scope.$watch('currtItem', function (newVal, oldVal) {
+                $http({
+                    method: 'JSONP',
+                    url: 'http://localhost:3000/datas/limit_role?role_id='+newVal+'&callback=JSON_CALLBACK'//由NodeJS搭建的数据服务
+                }).success(function (data) {
+                    $scope.limit_role=data;
+                    for (var i=0;i<$scope.limits.length;i++) {
+                        $scope.limits[i].checked=false;
+                        for (var j=0;j<$scope.limit_role.length;j++) {
+                            if ($scope.limits[i].id==$scope.limit_role[j].limit_id) {
+                                $scope.limits[i].checked=true;
+                            }
+                        }
+                    }
+                    console.log($scope.limits);
+                }).error(function () {
+                    alert('角色权限表请求失败！');
+                });
+            });
+            $scope.isChecked= function (limit_id) {
+                for (i=0;i<$scope.limit_role.length;i++) {
+                    if ($scope.limit_role[i].limit_id==limit_id) {
+                      return true;
+                    }
+
+                }
+            };
+        }])
+    </script>
+
+</head>
+<body ng-controller="func1">
+<fieldset>
+    <legend>用户角色</legend>
+    <select ng-model="currtItem">
+        <option ng-repeat="role in roles" ng-id="role_{{role.id}}" value="{{role.id}}">{{role.name}}</option>
+    </select>
+</fieldset>
+<div>{{currtItem}}</div>
+<fieldset>
+    <legend>权限列表</legend>
+    <span ng-repeat="limit in limits"><input type="checkbox" ng-model="limit.checked">{{limit.name}}</input></span>
+
+</fieldset>
+
+
+
+</body>
+</html>

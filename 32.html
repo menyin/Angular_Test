@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>运动插件+ng-show</title>
+    <style>
+        .box {
+            width: 200px;
+            height: 200px;
+            background: gray;
+            transition: 1s all;
+        }
+        .box.ng-hide-remove {
+            opacity:0;
+        }
+        .box.ng-hide-remove-acitive {
+            opacity:1;
+        }
+        .box.ng-hide-add{
+            opacity:0;
+        }
+        .box.ng-hide-add-active{
+            opacity:0;
+        }
+    </style>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script src="http://cdn.bootcss.com/angular.js/1.2.9/angular-animate.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp', ['ngAnimate']);
+        m1.controller('func1', ['$scope', function ($scope) {
+            $scope.btn = false;
+        }]);
+    </script>
+
+</head>
+<body ng-controller="func1">
+<input type="checkbox" ng-model="btn"/>
+
+<div ng-show="btn" class="box">运动插件+ng-show</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义服务</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        /*定义自定义服务有5种方式，主要使用一下2种*/
+        var m1 = angular.module('myApp',[]);
+        m1.factory('myServer', function () {
+            return {
+                name: 'myServer',
+                showName: function () {
+                    alert(this.name);
+                }
+            };
+        });
+        m1.controller('func1',['$scope','myServer', function ($scope,myServer) {
+            myServer.showName();
+        }]);
+        m1.provider('myServer2', function () {
+            return{
+                name:'myServer2',
+                $get: function () {
+                    return {
+                        name: this.name,
+                        showName: function () {
+                            alert(this.name);
+                        }
+                    };
+                }
+            }
+
+        });
+        //进行自定义服务的供应商配置
+        m1.config(['myServer2Provider', function(myServer2Provider) {
+            myServer2Provider.name = '自定义服务';
+        }]);
+        m1.controller('func2', ['$scope', 'myServer2', function($scope,myServer2) {
+            myServer2.showName();
+        }]);
+
+    </script>
+</head>
+<body >
+<div ng-controller="func1"></div>
+<div ng-controller="func2"></div>
+</body>
+</html>

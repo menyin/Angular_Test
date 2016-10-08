@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>$q服务，和JQ的deferred</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+    var m1 = angular.module('myApp',[]);
+    m1.controller('func1', ['$scope', '$q', function ($scope, $q) {
+        var dtd = $q.defer();
+        function show() {
+            setTimeout(function () {
+                alert('ok');
+                dtd.resolve();
+//                    alert('error');
+//                    dtd.reject();
+            }, 1000);
+            return dtd.promise;
+        }
+
+        show().then(function () {
+            alert('defer成功回调');
+        }, function () {
+            alert('defer失败回调');
+        });
+    }]);
+</script>
+</head>
+<body ng-controller="func1">
+
+</body>
+</html>

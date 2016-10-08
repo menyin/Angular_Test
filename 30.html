@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>运动插件+ng-if</title>
+    <style type="text/css">
+        .box {
+            width: 200px;
+            height: 200px;
+            background: gray;
+            transition:1s all;
+        }
+        .box.ng-enter {
+            opacity: 0;
+        }
+        .box.ng-enter-active {
+            opacity: 1;
+        }
+        .box.ng-leave {
+            opacity: 1;
+        }
+        .box.ng-leave-active {
+            opacity: 0;
+        }
+    </style>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script src="http://cdn.bootcss.com/angular.js/1.2.9/angular-animate.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp', ['ngAnimate']);//插件记得引入模块
+        m1.controller('func1', ['$scope', function ($scope) {
+            $scope.btn = true;
+        }]);
+    </script>
+</head>
+<body >
+<div ng-controller="func1">
+    <input type="checkbox" ng-model="btn"/>
+    <div ng-if="btn" class="box">
+        测试div
+    </div>
+</div>
+</body>
+</html>

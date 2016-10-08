@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义服务的封装引用</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        /*定义自定义服务有5种方式，主要使用一下2种*/
+        var m2= angular.module('myApp2',[]);
+        m2.factory('myServer2', function () {
+            return{
+                name:'myServer2',
+                showName: function () {
+                    alert(this.name);
+                }
+            }
+        });
+        var m1 = angular.module('myApp',['myApp2']);//引入其他模块
+        m1.controller('func1', ['$scope', 'myServer2', function($scope,myServer2){
+            myServer2.showName();
+        }]);
+
+    </script>
+
+</head>
+<body ng-controller="func1">
+
+</body>
+</html>

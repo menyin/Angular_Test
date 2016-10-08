@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>选项卡实例</title>
+    <style>
+        .tab textarea {
+            display: none;
+        }
+
+        .tab textarea.active {
+            display: block;
+        }
+
+        .tab input.active {
+            background: gray;
+        }
+    </style>
+    <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+
+        var m1 = angular.module('myApp', []);
+        m1.directive('myTab', function () {
+            return {
+                restrict: 'E',
+                replace: true,
+                scope: {
+                    myId: '@',
+                    myData: '='
+                },
+                controller: ['$scope', function ($scope) {
+                    $scope.name = 'miaov';
+                }],
+                templateUrl: 'tabtemp.html',
+                link: function (scope, element, attr) {
+//                    setTimeout(function () {//等待angular渲染完
+//                        console.log(element[0].id);
+//                    },1000);
+                    /*原生js实现      setTimeout(function () {//等待angular渲染完
+                     var aInput = element[0].getElementsByTagName('input');
+                     var aTextarea = element[0].getElementsByTagName('textarea');
+                     setActive(0);
+                     for (var i = 0; i < aInput.length; i++) {
+                     aInput[i].index = i;
+                     aInput[i].onclick = function () {
+                     setActive(this.index);
+                     };
+                     }
+                     function setActive(index) {
+                     for (var j = 0; j < aTextarea.length; j++) {
+                     aTextarea[j].style.display = "none";
+                     }
+                     aTextarea[index].style.display ="block";
+                     }
+                     }, 100);*/
+                    /*JQ实现          setTimeout(function () {
+                     element.delegate('input', 'click', function () {
+                     $(this).attr('class', 'active').siblings('input').attr('class', '');
+                     $(this).siblings('textarea').eq($(this).index('input')).attr('class', 'active').siblings('textarea').attr('class', '')
+                     });
+                     }, 100);*/
+                }
+            };
+        });
+        m1.controller('func1', ['$scope', function ($scope) {
+            $scope.data1 = [
+                {title: '选项卡1', content: '选项卡1内容选项卡1内容'},
+                {title: '选项卡2', content: '选项卡2内容选项卡1内容'},
+                {title: '选项卡3', content: '选项卡3内容选项卡1内容'},
+                {title: '选项卡4', content: '选项卡4内容选项卡1内容'}
+            ];
+            $scope.data2 = [
+                {title: '选项卡1', content: '选项卡1内容选项卡1内容'},
+                {title: '选项卡2', content: '选项卡2内容选项卡1内容'},
+                {title: '选项卡3', content: '选项卡3内容选项卡1内容'},
+            ];
+        }]);
+    </script>
+
+</head>
+<body ng-controller="func1">
+<my-tab my-id="#tab1" my-data="data1"></my-tab>
+</body>
+</html>

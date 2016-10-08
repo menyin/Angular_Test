@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>供应商</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp',[]);
+        m1.config(['$interpolateProvider', function ($interpolateProvider) {
+            $interpolateProvider.startSymbol('@@');
+            $interpolateProvider.endSymbol('@@');
+        }]);
+        m1.controller('func1',['$scope', function ($scope) {
+            $scope.data = '测试供应商配置';
+        }]);
+
+    </script>
+</head>
+<body ng-controller="func1">
+<div>{{data}}</div>
+<div>@@data@@</div>
+</body>
+</html>

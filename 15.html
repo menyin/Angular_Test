@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义指令</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp', []);
+        //        m1.directive('myHello', function () {
+        //            return {
+        //                restrict: 'A',
+        //                template: '<h2>自定义指令-属性指令</h2>'
+        //            };
+        //        });
+        //        m1.directive('myHi', function () {
+        //
+        //            return {
+        //                restrict: 'E',
+        //                template: '<h2>自定义指令-标签指令</h2>'
+        //            };
+        //        });
+        //        m1.directive('myHe', function () {
+        //            return {
+        //                restrict: 'C',
+        //                template: '<h2>自定义指令-类指令</h2>'
+        //            };
+        //        });
+        //        m1.directive('replace', function () {
+        //            return {
+        //                restrict: 'A',
+        //                template: '<h2>自定义指令-replace参数测试</h2>',
+        //                replace: true
+        //            };
+        //        });
+        //
+        //        m1.directive('templateurl', function () {
+        //            return {
+        //                restrict: 'A',
+        //                templateUrl: 'temp.html',
+        //            };
+        //        });
+        //        m1.directive('scope', function () {
+        //            return {
+        //                restrict: 'A',
+        //                template: '<h2>自定义指令-scope参数测试<input type="text"  ng-model="name"/>{{parentData}}</h2>',
+        //                scope: true,
+        //                controller: ['$scope', function ($scope) {
+        //                    $scope.name = '独立作用域数据'
+        //                }]
+        //            };
+        //        });
+        //        m1.controller('func1', ['$scope', function ($scope) {
+        //            $scope.parentData = '父元素作用域的数据';
+        //        }]);
+        //        m1.directive('link', function () {
+        //            return {
+        //                restrict: 'A',
+        //                template: '<h2>自定义指令-link参数测试</h2>',
+        //                controller: ['$scope', function ($scope) {
+        //                    $scope.name = 'link测试作用域数据'
+        //                }],
+        //                link: function (scope, element, attr, reController) {
+        //                    console.log(scope.name);
+        //                    console.log(element);
+        //                    console.log(attr);
+        //                    console.log(reController);// 只有使用require后才有reController
+        //                }
+        //            };
+        //        });
+        //        m1.directive('transclude', function () {
+        //            return {
+        //                restrict: 'A',
+        //                template: '<h2>自定义指令-transclude参数测试<span ng-transclude></span></h2>',
+        //                transclude: true
+        //            };
+        //        });
+        m1.directive('beiyinyong', function () {
+            return {
+                restrict: 'E',
+                transclude: true,
+                replace: true,
+                template: '<h2>被引用自定义指令beiyinyong<span ng-transclude></span></h2>',
+                controller: function ($scope) {
+                    this.data = '被引用的作用域下的数据模型';
+                   // $scope.data = '被引用的作用域下的数据模型';
+
+                }
+            };
+        });
+        m1.directive('require', function () {
+            return {
+                restrict: 'E',
+                template: '自定义指令-require参数测试',
+                require: '?^beiyinyong',//引入上面定义link指令的作用域
+                replace: true,
+                controller: function ($scope) {
+                    $scope.data = '这是自身作用域下的数据模型';
+                },
+                link: function (scope, element, attr, reController) {
+                    console.log(reController.data);
+//                    alert(reController);
+                }
+
+            };
+        });
+    </script>
+</head>
+<body>
+<div my-hello></div>
+<my-hi></my-hi>
+<div class="my-he"></div>
+<div replace></div>
+<div templateurl></div>
+<div ng-controller="func1">
+    <div scope>
+    </div>
+    <div scope ng-init="name='【改此彼不变】'">
+    </div>
+</div>
+<div link id="dv3" style="background:red;"></div>
+
+<!--<div transclude>【transclude:true时此部分数据会被插入到模板html里ng-transclude元素里】</div>-->
+<beiyinyong>
+    <require></require>
+</beiyinyong>
+</body>
+</html>

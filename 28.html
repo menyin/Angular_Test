@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>路由插件</title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <!--&lt;!&ndash;<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.3.0/angular-route.js"></script>&ndash;&gt;这个版本插件库不行-->
+    <script src="http://cdn.bootcss.com/angular.js/1.2.9/angular-route.min.js"></script>
+    <script type="text/javascript">
+        var m1 = angular.module('myApp', ['ngRoute']);
+        m1.config(['$routeProvider', function ($routeProvider) {
+            $routeProvider.when('/aaa/:param', {
+                template: '<h2 style="background: green; color:red;">这是/aaa/:param页面其中param参数值为{{params}},name值为{{name}}</h2>',
+                controller: 'func1'
+            })
+            .when('/bbb', {
+                template: '<h2 style="background: orange; color:black;">这是/bbb页面,name值为{{name}} </h2>',
+                controller: 'func2'
+            })
+            .when('/ccc', {
+                template: '<h2 style="background: yellow; color:white;">这是/ccc页面,name值为{{name}}</h2>',
+                controller: 'func3'
+            })
+            .otherwise({
+                redirectTo: '/aaa/456'
+            });
+        }]);
+
+        m1.run(['$rootScope', function ($rootScope) {
+
+            $rootScope.$on('$routeChangeStart', function (event, current, pre) {
+                console.log(event);
+                console.log(current);
+                console.log(pre);
+            });
+
+        }]);
+
+        m1.controller('func1', ['$scope', '$location', '$routeParams', function ($scope, $location, $routeParams) {
+            $scope.name = 'hello';
+            console.log($routeParams);
+            $scope.params = $routeParams;
+            $scope.$location = $location;
+        }]);
+        m1.controller('func2', ['$scope', function ($scope) {
+            $scope.name = 'hi';
+        }]);
+        m1.controller('func3', ['$scope', function ($scope) {
+            $scope.name = 'nihao';
+        }]);
+    </script>
+</head>
+<body>
+<div ng-controller="func1">
+    <a href="" ng-click="$location.path('aaa/123')">首页</a>
+    <a href="" ng-click="$location.path('bbb')">学员</a>
+    <a href="" ng-click="$location.path('ccc')">课程</a>
+
+    <div ng-view></div>
+</div>
+</body>
+</html>
