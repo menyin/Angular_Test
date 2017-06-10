@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>联动下拉框经典案例</title>
+</head>
+<body ng-controller="act">
+<!--<select name="" id="sel" ng-model="selected"  ng-options="item.name for item in data">-->
+<select name="" id="" ng-model="data.curr" ng-options="item.id as item.name for item in data">
+</select>
+{{data.curr}}
+<p ng-repeat="item in data">{{item}}</p>
+<p><input ng-repeat="item in data" type="radio" name="sel" ng-checked="item.selected" ng-click="data.curr=item.id"/>{{item.name}}</p>{{ddd}}
+</body>
+</html>
+<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript" src="js/ocLazyLoad.min.js"></script>
+
+
+<script type="text/javascript">
+    /*在控制器中加载*/
+    /* var module1 = angular.module('myapp',['oc.lazyLoad'])
+     module1.controller('act1', ['$scope','$ocLazyLoad','$injector',function($scope,$ocLazyLoad,$injector){
+     $ocLazyLoad.load('js/test.js').then(function() {
+     alert(' 成功');
+     var funcCom = $injector.get('funcCom');
+     funcCom.testFunc();
+     }, function (e) {
+     alert('失败');
+     });
+     }]);*/
+
+    /*在模块中预加载（不可行，只有在非启动模块才能使用模块依赖注入）*/
+    /*var module1 = angular.module('myapp',  [{
+     files: [
+     './js/test.js'
+     ],
+     cache: false
+     }]);
+     module1.controller('act1', ['$scope','funcCom',function($scope,funcCom){
+     funcCom.testFunc();
+     }]);
+     window.onload= function () {
+     debugger;
+     angular.bootstrap(document.querySelector('html'),['myapp']);
+     };*/
+</script>
