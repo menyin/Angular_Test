@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>联动下拉框经典案例</title>
+</head>
+<body ng-controller="act">
+<!--<select name="" id="sel" ng-model="selected"  ng-options="item.name for item in data">-->
+<select name="" id="" ng-model="data.curr" ng-options="item.id as item.name for item in data">
+</select>
+{{data.curr}}
+<p ng-repeat="item in data">{{item}}</p>
+<p><input ng-repeat="item in data" type="radio" name="sel" ng-checked="item.selected" ng-click="data.curr=item.id"/>{{item.name}}</p>{{ddd}}
+</body>
+</html>
+<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript" src="js/ocLazyLoad.min.js"></script>
+<script>
+    var myapp = angular.module('myapp', []);
+    myapp.controller('act', ['$scope',function ($scope) {
+        $scope.data = [
+            {name: '张三', id: 1, selected: false},
+            {name: '李四', id: 2, selected: false},
+            {name: '王五', id: 3, selected: true},
+            {name: '赵六', id: 4, selected: false}
+        ];
+
+        Object.defineProperty($scope.data, 'curr', {
+            get: function () {
+                return this.filter(function (item) {
+                    return item.selected ;
+                })[0].id;
+            },
+            set: function (id) {
+                this.forEach(function (e) {
+                    e.selected =(id==e.id);
+                });
+            }
+
+        });
+
+
+    }]);
+</script>
