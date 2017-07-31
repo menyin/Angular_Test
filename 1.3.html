@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myapp2">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <!--<script src="js/angular.min.js"></script>-->
+    <script>
+        var m2 = angular.module('myapp2', []);
+        m2.controller('func',['$scope', function ($scope) {
+            $scope.name='社会主义是个好宝宝';
+        }]);
+    </script>
+</head>
+<body ng-controller="func">
+{{name}}
+</body>
+</html>

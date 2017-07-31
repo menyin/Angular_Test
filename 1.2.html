@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="js/angular.min.js"></script>
+    <script>
+        var m = angular.module('myapp',[]);
+/*        m.controller('funParent',['$scope', function ($scope) {
+
+        }]);
+        m.controller('funChild',['$scope', function ($scope) {
+
+        }]);*/
+        m.directive('myTest', function () {
+            return {
+                restrict:'AE',
+                template:'<div>hello angular {{obj.parentData}} <p ng-transclude data-val="{{myAttrData}}"></p></div>',
+                replace:true,
+                scope:{myAttrData:'@'},
+                /*scope:false,*/
+                controller:['$scope', '$element', '$transclude',function($scope,$element,$transclude){
+                    $scope.name = '数据模型';
+                    /*$scope.$$nextSibling.zhilingData = '指令的数据模型';*/
+                    /*$scope.$$prevSibling.zhilingData = '指令的数据模型';*/
+                    console.log(123456);
+                    console.log($scope);
+                    console.log(123456);
+                    console.log($scope.myAttrData);
+                    $transclude(function (clone) {
+                        console.log(987654);
+                        console.log(clone);
+                        clone.attr('init','123');
+                    });
+                }],
+                link:function(scope,element,attr){},
+                transclude:true
+            };
+        });
+        m.controller('func',['$scope', function ($scope) {
+            console.log(777777777);
+            console.log($scope);
+        }]);
+        m.controller('funcParent',['$scope', function ($scope) {
+            console.log(888888888);
+            $scope.obj = {};
+            $scope.obj.parentData = '资本主义好';
+        }]);
+    </script>
+    <script>
+
+    </script>
+</head>
+<body ng-controller="funcParent">
+<my-test  my-attr-data="社会主义好"><input ng-controller="func" type="text" ng-model="myAttrData"/></my-test>
+</body>
+</html>

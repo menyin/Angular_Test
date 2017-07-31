@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+</head>
+<body ng-controller="act1">
+<form action="" name="myForm" novalidate="novalidate">
+    <input id="txt" name="myEmail" type="test" ng-model="dataEmail" ng-verify="{email:true,require:true}"/>
+    <input type="text" ng-model="dataEmail"/>
+</form>
+</body>
+</html>
+<script>
+    var d = angular.module('ngVerify', []);
+    d.directive('ngVerify', ['$compile',function ($compile) {
+        return {
+            restrict: 'A',
+            require:'ngModel',
+            controller: ['$scope', function ($scope) {
+                $scope.name = 'link测试作用域数据';
+             }],
+            link:function($scope,$element,$attrs,$ngModel){
+                //获取自定义验证指令的信息，并设置$setValidity********
+                var str = $attrs.ngVerify.replace(/\{/g,'\{\"').replace(/\}/g,'\"\}').replace(/:/g,'\":\"').replace(/,/g,'\",\"');
+                var oVerify = JSON.parse(str);
+               /* //通过用户手工输入改变值时
+                $ngModel.$parsers.push(function(value){
+                    //设置界面内容
+                    $ngModel.$setViewValue(value);
+                    //渲染到界面上，这个函数很重要
+                    $ngModel.$render();
+                    setValidityFunc(value);
+                    return value;
+                })
+                //通过动态改变值(代码改变或数据双向绑定改变)
+                $ngModel.$formatters.push(function (value) {
+                    //设置界面内容
+                    $ngModel.$setViewValue(value);
+                    //渲染到界面上，这个函数很重要
+                    $ngModel.$render();
+                    setValidityFunc(value);
+                    return angular.isUndefined(value) ? "" : "" + value;;
+                });*/
+                $ngModel.$validators.uppercase= function (modelValue,viewValue) {
+                    //设置界面内容
+
+                    $ngModel.$modelValue= modelValue=viewValue;
+                   /* $ngModel.$setViewValue(viewValue);
+                    //渲染到界面上，这个函数很重要
+                    $ngModel.$render();*/
+                    //设置验证内容
+                    setValidityFunc(viewValue);
+                    //返回true，表示验证通过，在这里是没啥意义
+                    return true;
+                };
+                function setValidityFunc(value){
+                    for (var item in oVerify) {
+                        switch (item) {
+                            case 'required':
+                                $ngModel.$setValidity("verify_required",value!='');
+                                break;
+                            case 'email':
+                                var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+                                $ngModel.$setValidity("verify_email",reg.test(value));
+                                break;
+                            case 'pattern':
+                                var expresion=oVerify[pattern];
+                                var reg=new RegExp(expresion);
+                                $ngModel.$setValidity("verify_pattern",reg.test(value));
+                                break;
+                            case 'number':
+                                var reg = /^[0-9]+.?[0-9]*$/;
+                                $ngModel.$setValidity("verify_number",reg.test(value));
+                                break;
+                            case 'url':
+                                var reg =/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+                                $ngModel.$setValidity("verify_url",reg.test(value));
+                                break;
+                            case 'minlength':
+                                $ngModel.$setValidity("verify_minlength",value.length>=oVerify['minlength']);
+                                break;
+                            case 'maxlength':
+                                $ngModel.$setValidity("verify_maxlength",value.length<=oVerify['maxlength']);
+                                break;
+                        }
+                    }
+                }
+
+                //定义错误提示信息//对验证名称进行转换，否则和angular原生验证冲突********
+                var aMsgSetting = [
+                    {name:'default',msg:''},
+                    {name:'url',msg:'url格式错误'},
+                    {name:'number',msg:'必须为数字'},
+                    {name:'email',msg:'邮箱格式错误'},
+                    {name:'required',msg:'必填项'},
+                    {name:'pattern',msg:'只能包含字母'},
+                    {name:'minlength',msg:'字符数至少5位'},
+                    {name:'pass',msg:'验证通过'}
+                ];
+                var aMsg = [];//做一个转换添加verify_前缀，以防和angular原生验证冲突
+                for (var i=0;i<aMsgSetting.length;i++) {
+                    aMsg.push({name:'verify_'+aMsgSetting[i].name,msg:aMsgSetting[i].msg})
+                }
+
+                Object.defineProperty($ngModel, "$verifyInvalid", {
+                        get: function () {
+                            var oError=$ngModel.$error;
+                            var verifyInvalid = false;//验证通过就没有提示信息 //写成get方法
+                            for(attr in oError) {
+                                var oMsg = aMsg.filter(function (e) {
+                                    return e.name === attr;
+                                })[0];
+                                if (oMsg && oError[attr]==true) {
+                                    verifyInvalid = true;
+                                    break;
+                                }
+                            }
+                            return verifyInvalid;
+                        },
+                        set: function () {
+                        }
+                    });
+
+                //根据验证结果进行信息处理********
+                var subScope = $scope.$new(),//创建子scope
+                 tip = '<span ng-if="hasError()" ng-bind="errors()"></span>';//错误标签的字符串,有错误的时候，显示错误内容
+                //脏，而且无效，当然属于错误了
+                $scope.hasError = function () {
+                    return $ngModel.$verifyInvalid && $ngModel.$dirty;
+                };
+
+                //返回ngModel的错误提示信息
+                $scope.errors = function(){
+                    var oError=$ngModel.$error;
+                    var result = '';//验证通过就没有提示信息
+                    for(attr in oError) {
+                        var oMsg = aMsg.filter(function (e) {
+                            return e.name === attr;
+                        })[0];
+                        if (oMsg && oError[attr]==true) {
+                            result = attr;
+                            break;
+                        }
+                    }
+
+                    $scope.resultMsg = aMsg.filter(function (e) {
+                        return e.name ===result;
+                    })[0].msg||'';
+                    return $scope.resultMsg;
+                }
+                //编译错误的指令，放到输入框后面
+                $element.after($compile(tip)(subScope));
+            }
+        };
+    }]);
+</script>
+<script>
+    var m = angular.module('myApp', ['ngVerify']);
+
+    m.controller('act1', ['$scope', function($scope){
+       /* $scope.dataEmail = '';*/
+    }]);
+
+
+</script>

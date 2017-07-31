@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <!--<link rel="stylesheet" href="js/angular-bootstrap/ui-bootstrap-csp.css"/>-->
+    <link rel="stylesheet" href="js/angular-bootstrap/bootstrap.css"/> <!--必须滴-->
+    <!--<link rel="stylesheet" href="js/angular-bootstrap/angular-csp.css"/>-->
+    <script src="js/angular-bootstrap/angular.min.js"></script><!--必须滴-->
+    <!--<script src="js/angular-bootstrap/ui-bootstrap.js"></script>-->
+    <script src="js/angular-bootstrap/ui-bootstrap-tpls.js"></script><!--必须滴，如果自己提供模板工具如art-template工具，就用ui-bootstrap.js-->
+    <script>
+        var m = angular.module('myapp', ['ui.bootstrap']);
+        m.controller('AlertDemoCtrl',['$scope', function ($scope) {
+            $scope.alerts = [
+                { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
+                { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
+            ];
+            $scope.addAlert = function() {
+                $scope.alerts.push({msg: 'Another alert!'});
+            };
+            $scope.closeAlert = function(index) {
+                $scope.alerts.splice(index, 1);
+            };
+        }]);
+    </script>
+</head>
+<body >
+
+<div ng-controller="AlertDemoCtrl">
+    <script type="text/ng-template" id="alert.html">
+       0000000 <div ng-transclude></div>123456
+    </script>
+
+    <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
+    <div uib-alert template-url="alert.html" style="background-color:#fa39c3;color:white">A happy alert!</div>
+    <button type="button" class='btn btn-default' ng-click="addAlert()">Add Alert</button>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="test2">
+
+</div>
+</body>
+</html>
+<!--<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript" src="js/ocLazyLoad.min.js"></script>-->
+<script>
+
+</script>
+<script>
+    /***
+     * localStorage存储对象
+     *  @param {string} key 除了null以外的任意对象
+     *  @param {any object} obj 除了null以外的任意对象
+     */
+   function set(key,obj){
+       var objType = getObjType(obj);
+        var objData = null;
+        if(objType=='Null'){//不能存储null
+            console.error('The "value" value cannot be null');
+            return;
+        }
+        if(objType==='number'&&isNaN(obj)){//isNaN('ddd')也为true
+            objData = 'NaN';
+        }else{
+            switch (objType) {
+                case 'Undefined':
+                    objData = '';
+                    break;
+                case 'Function':
+                    objData=obj.toString();
+                    break;
+                default :
+                    objData = obj;
+                    break;
+            }
+        }
+
+       var data = {type: objType, value: objData};
+       localStorage.setItem(key, JSON.stringify(data));
+/*       console.log(localStorage.getItem(key));
+       console.log(JSON.parse(localStorage.getItem(key)));*/
+
+   }
+
+    /***
+     * localStorage获取对象
+     *  @param {string} key 除了null以外的任意对象
+     *  @returns {*} 返回存储在localStorage的对象
+     */
+    function get(key) {
+        var returnObj=null;
+        var data = JSON.parse(localStorage.getItem(key));
+        if(data==null) {
+            return null;
+        }
+
+        switch (data.type) {
+            case 'Undefined':
+                returnObj = undefined;
+                break;
+            case 'Function':
+                returnObj=(new Function('return '+data.value))();
+                break;
+            case 'Array':
+            case 'Object':
+            case 'boolean':
+                returnObj=data.value;
+                break;
+            case 'Boolean':
+                returnObj = new Boolean(data.value);
+                break;
+            default :
+                    if(data.type.charAt(0)<'Z'&&data.type.charAt(0)>'A'){
+                        eval('returnObj=new ' + data.type + '("' + data.value + '");');
+                    }else{
+                        data.type = data.type.charAt(0).toUpperCase()+data.type.substring(1);//转为首字符大写，如number --> Number
+                        eval('returnObj=' + data.type + '("' + data.value + '");');
+                    }
+                break;
+        }
+        return returnObj;
+
+    }
+
+   /***
+    * 获取任意对象直接类型
+    * @param obj 对象
+    * @returns {string|Null} 返回null或以下类型字符串
+    * "number" 普通数字变量 如var obj=123;
+    * "Number" 构造类数字变量 如var obj=new Numeber(123);
+    * "string" 普通字符串变量 如var obj='abc';
+    * "String" 构造类数字类变量 如var obj=new Numeber(123);
+    * "boolean" 普通数字类变量 如var obj=false;
+    * "Boolean" 构造类数字类变量 如var obj=new Boolean(false);
+    * "Null" null变量 如var obj=null;
+    * "Date" 时间类变量 如var obj=new Date();
+    * "Functon" 函数类变量 如var obj=function(){};
+    * "Undefined" undefined变量 如var obj=undefined;或var obj;
+    * "Array" 数组类变量 如var obj=[];或var obj=new Array();
+    * "Functon" 函数类变量 如var obj=function(){};或var obj=new Fuction('');
+    * "MyPerson" 自定义类型 如var obj=new Person();
+    */
+    function getObjType(obj) {
+        var type =null;
+        /*var typeStr=Object.prototype.toString.call(obj);
+        typeStr=typeStr.match(/[A-Z][A-Za-z]*[a-z]/)[0];*/
+       if (obj===null) {
+           type = 'Null';
+       }else if(obj===undefined){
+           type = 'Undefined';
+       }else{
+           var typeStr = obj.constructor.name;
+           switch (typeStr) {
+               case 'Number':
+                   type = typeof(obj) == 'number' ? 'number' : 'Number';
+                   break;
+               case 'String':
+                   type = typeof(obj) == 'string' ? 'string' : 'String';
+                   break;
+               case 'Boolean':
+                   type = typeof(obj) == 'boolean' ? 'boolean' : 'Boolean';
+                   break;
+               default://包括Date、Undefined、Null、Functon、Array对象，还有自定义类型，如Person
+                   type = typeStr;
+                   break;
+           }
+       }
+        return type;
+    }
+
+    /***
+     * 将对象转化为指定类型对象
+     * @param obj {any object} 对象
+     * @param type {string} 目标类型字符串
+     * @returns {*} 返回null或undefined或目标类型对象
+     * @example var obj=getObjByType('123','number');
+     * @description  type字符串为以下类型字符串
+     * "number" 普通数字变量 如var obj=123;
+     * "Number" 构造类数字变量 如var obj=new Numeber(123);
+     * "string" 普通字符串变量 如var obj='abc';
+     * "String" 构造类数字类变量 如var obj=new Numeber(123);
+     * "boolean" 普通数字类变量 如var obj=false;
+     * "Boolean" 构造类数字类变量 如var obj=new Boolean(false);
+     * "Null" null变量 如var obj=null;
+     * "Date" 时间类变量 如var obj=new Date();
+     * "Functon" 函数类变量 如var obj=function(){};
+     * "Undefined" undefined变量 如var obj=undefined;或var obj;
+     * "Array" 数组类变量 如var obj=[];或var obj=new Array();
+     * "Functon" 函数类变量 如var obj=function(){};或var obj=new Fuction('');
+     */
+    function getObjByType(obj,type){
+        var objReturn =null;
+        /*var typeStr=Object.prototype.toString.call(obj);
+         typeStr=typeStr.match(/[A-Z][A-Za-z]*[a-z]/)[0];*/
+        if (type==='Null') {
+            objReturn =null;
+        }else{
+            switch (type) {
+                case 'Undefined':
+                    objReturn =undefined;
+                    break;
+                case 'number':
+                    objReturn = Number(obj);//当转换失败返回NaN
+                    break;
+                case 'Number':
+                    objReturn =new Number(obj);//当转换失败返回Number { NaN }对象
+                    break;
+                case 'string':
+                    objReturn =String(obj);
+                    break;
+                case 'Number':
+                    objReturn =new String(obj);
+                    break;
+                case 'boolean':
+                    objReturn =Boolean(obj);
+                    break;
+                case 'Boolean':
+                    objReturn =new Boolean(obj);
+                    break;
+                case 'Date':
+                    objReturn = new Date(obj);//当转换失败返回NaN
+                    break;
+                case 'Array':
+                    objReturn =new Array(obj);//当转换失败返回NaN
+                    break;
+                case 'Function':
+                    objReturn =new Fuction(obj);//当转换失败返回undefined,通常obj都会是一段js代码字符串
+                    break;
+                case 'Object':
+                    objReturn = new Object(obj);//如string、numeber等会转换为String、Number对象
+                    break;
+                default:
+                    objReturn=null;
+                    break;
+            }
+        }
+        return objReturn;
+    }
+
+    /*var func1=function(){
+        return '社会主义好';
+    }*/
+    /*var func1=new Function('return "社会好"');*/
+
+    function Person(){
+        this.name = 'cny';
+        this.age= 123;
+    }
+    set('sss',new Person());
+    console.log(get('sss'));
+    console.log(typeof(get('sss')));
+    console.log(get('sss').constructor.name);
+</script>
+
+
+
