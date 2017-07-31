@@ -1,16 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myModule">
 <head>
     <meta charset="UTF-8">
     <title></title>
+
 </head>
 <body>
-<h3>这是模板页的内容</h3>
-<ul>
-    <li>模板页list列表项1</li>
-    <li>模板页list列表项2</li>
-    <li>模板页list列表项3</li>
-    <li>模板页list列表项4</li>
-</ul>
+<p ng-controller="func1" ng-bind="{{name1}}"></p>
+<p ng-controller="func2" ng-bind="{{name2}}"></p>
 </body>
 </html>
+<script src="js/angular.min.js"></script>
+<script>
+    angular.module('myModule', [])
+            .controller('func1',['$scope', function ($scope) {
+                $scope.name1='111111'
+            }])
+            .controller('func2',['$scope', function ($scope) {
+                $scope.name2='222222'
+            }]);
+
+</script>

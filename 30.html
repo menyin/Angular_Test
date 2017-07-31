@@ -23,21 +23,68 @@
             opacity: 0;
         }
     </style>
+    <style>
+        /*ng-repeat的元素*/
+        .repeat_item{
+            -webkit-transition: all linear 0.2s;
+            -o-transition: all linear 0.2s;
+            transition: all linear 0.2s;
+        }
+        /*元素被创建显示之前*/
+        .repeat_item.ng-enter{
+            opacity:0;
+        }
+        /*元素显示之后*/
+        .repeat_item.ng-enter-active{
+            opacity:1;
+        }
+        /*元素隐藏离开前*/
+        .repeat_item.ng-leave{
+            opacity:1;
+        }
+        /*元素隐藏离开后*/
+        .repeat_item.ng-leave-active{
+            opacity:0;
+        }
+
+        /*不同时出现*/
+        .repeat_item.ng-enter-stagger {
+            transition-delay:0.5s;
+            transition-duration:0;
+        }
+    </style>
     <script type="text/javascript" src="js/angular.min.js"></script>
     <script src="http://cdn.bootcss.com/angular.js/1.2.9/angular-animate.min.js"></script>
     <script type="text/javascript">
         var m1 = angular.module('myApp', ['ngAnimate']);//插件记得引入模块
         m1.controller('func1', ['$scope', function ($scope) {
             $scope.btn = true;
+            $scope.data = [
+                {name:'张三',age:123},
+                {name:'李四',age:456},
+                {name:'王五',age:789},
+                {name:'赵六',age:123},
+                {name:'黄七',age:456}
+            ];
+            $scope.addItem= function () {
+                $scope.data.push({name:'黄七',age:456});
+            };
+            $scope.removeItem= function () {
+                $scope.data.pop({name:'黄七',age:456});
+            };
+
         }]);
     </script>
 </head>
-<body >
-<div ng-controller="func1">
+<body ng-controller="func1">
+<!--<div ng-controller="func1">
     <input type="checkbox" ng-model="btn"/>
     <div ng-if="btn" class="box">
         测试div
     </div>
-</div>
+</div>-->
+<input type="button" ng-click="addItem()" value="添加"/>
+<input type="button" ng-click="removeItem()" value="删除"/>
+<p ng-repeat="item in data" class="repeat_item">名称：{{item.name}}，年龄：{{item.age}}</p>
 </body>
 </html>

@@ -3,9 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>MVC基本使用</title>
-
+    <script>
+        window.onload= function () {
+            var oTxt = document.getElementById('txt');
+            oTxt.__defineGetter__('value', function () {
+                return this._value;
+            });
+            oTxt.__defineSetter__('value', function (val) {
+                alert(val);
+                this._value=val+22222;
+            });
+            var oBt = document.getElementById('bt');
+            oBt.onclick= function () {
+                oTxt.value="qqqqqqq";
+                alert(oTxt.value)
+            };
+        };
+    </script>
 </head>
 <body>
+<input type="button" id="bt"/>
+<input type="text" id="txt"/>
 <p ng-controller="func1">{{name}}</p>
 <p ng-controller="func2">{{name}}</p>
 <p ng-controller="func3">{{name}}</p>
